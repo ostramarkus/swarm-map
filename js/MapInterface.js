@@ -3,7 +3,7 @@ class MapInterface  {
 		this.hoverCell = null;
 		this.renderSize = renderSize;
 		this.position = {'x': width * 0.5 - this.renderSize / 2,
-							  'y': height * 0.5 - this.renderSize / 2}
+						 'y': height * 0.5 - this.renderSize / 2}
 		this.mouseIsPressed = false;
 		this.addMode = false;
 		this.paintMode = "terrain"; //"start", "target"
@@ -203,7 +203,6 @@ class MapInterface  {
 
     runSwarm() {
         this.swarm = new Swarm(this.map);
-        console.log(this.swarm);
     }
 
     renderSwarm() {
@@ -213,7 +212,15 @@ class MapInterface  {
             // console.log(agent)
             let c = color(200, 20, 20);
             this.paintCell(agent.location.x, agent.location.y, c)
+            this.renderPath(agent);
         }
         pop();
+    }
+
+    renderPath(agent) {
+        let c = color(200, 20, 20, 10);
+        for (let loc of agent.path) {
+            this.paintCell(loc.x, loc.y, c)
+        }
     }
 }

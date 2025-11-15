@@ -13,12 +13,14 @@ class Map {
 	}
 
     isAccesible(x, y) {
-		try {
-			return this.cells[y][x];
-   		} catch(error) {
-			return false;
-		}
+        if (
+            y < 0 || y >= this.cells.length ||
+            x < 0 || x >= this.cells[y].length
+        ) {
+            return false;
+        }
 
+        return !this.cells[y][x]
     }
 
 	getCellValue(x, y) {
@@ -30,7 +32,6 @@ class Map {
 	}
 
 	setCellValue(value, x, y) {
-		console.log(value);
 		this.cells[y][x] = value;
 	}
 } // End Map

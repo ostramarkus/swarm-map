@@ -3,8 +3,8 @@ let map, mapInterface;
 function setup() {
 	createCanvas(windowWidth, windowHeight);
 	background(100);
-	mapInterface = new MapInterface(128)
-	mapInterface.createMap(16);
+	mapInterface = new MapInterface(256)
+	mapInterface.createMap(32);
 	mapInterface.map.randomize();
 	console.log(mapInterface)
 }
@@ -24,7 +24,6 @@ function mouseReleased() {
 }
 
 function keyPressed() {
-	console.log(keyCode);
 	if (keyCode == 32) {
 		mapInterface.dumpMap();
 	} else if (keyCode == 83) {	// s
@@ -39,7 +38,7 @@ function keyPressed() {
 		mapInterface.loadMap();
 	} else if (keyCode == 13) {	// Enter
 		mapInterface.runSwarm();
-		} else if (keyCode == 65) {	// a
-		console.log(this.mapInterface.swarm);
+	} else if (keyCode == 65) {	// a
+		mapInterface.swarm.run = !mapInterface.swarm.run;
 	}
 }

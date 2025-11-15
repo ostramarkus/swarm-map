@@ -3,16 +3,48 @@ class Agent {
 		this.swarm = swarm;
 		this.location = {'x': x, 'y': y};
 		this.path = [];
+        this.moveOptions = [];
 	}
 
 	update() {
-		let moveOptions = this.findMoveOptions();
-        if (moveOptions.length > 0) {
-            this.moveTo(moveOptions[floor(random(moveOptions.length))]);
+        let atTarget = (this.location.x == this.swarm.map.target.x &&
+                    this.location.y == this.swarm.map.target.y) 
+
+        if (atTarget) {
+            console.log("Target reached in: " + this.path.length + "moves!");
+            this.swarm.run = false;
+            return
+        }    
+
+		this.moveOptions = this.findMoveOptions();
+        if (this.moveOptions.length > 0) {
+            this.moveOptions
+            let sortedMoves = this.sortByPathFrequency(this.moveOptions, this.path);
+            this.moveTo(sortedMoves[0]);
         }
-        console.log(moveOptions);
 	}
 
+    sortByPathFrequency(moveOptions, path) {
+        function countOccurrences(pos) {
+            return path.filter(p => p.x === pos.x && p.y === pos.y).length;
+        }
+
+        // Sortera stigande efter antal förekomster
+        return moveOptions.sort((a, b) => {
+            return countOccurrences(a) - countOccurrences(b);
+        });
+    }
+/*
+    filterBacktracking(moveOptions, path) {
+        if (path.length < 2) return moveOptions; // ingen risk ännu
+
+        const last = path[path.length - 1];
+        const previous = path[path.length - 2];
+
+        // Filtrera bort positioner som är exakt "previous"
+        return moveOptions.filter(opt => !(opt.x === previous.x && opt.y === previous.y));
+    }
+*/  
 	findMoveOptions() {
 		let options = [];
         let loc = this.location;
@@ -33,7 +65,7 @@ class Agent {
         return options;
 	}
     moveTo(moveOption) {
-        console.log("moveTo: " + moveOption);
+        this.path.push(moveOption)
         this.location = moveOption;
     }
 }
